@@ -1,0 +1,4 @@
+<div class="spinner-wrapper" [class.spinner-wrapper--overlay]="overlay">
+  <div class="spinner" [class.spinner--sm]="size === 'sm'"></div>
+  <span class="spinner__label" *ngIf="label">{{ label }}</span>
+</div>

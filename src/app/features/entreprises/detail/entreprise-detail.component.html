@@ -1,0 +1,152 @@
+<div class="detail-page">
+
+  <!-- Retour -->
+  <a class="detail-page__back" routerLink="/admin/entreprises">
+    ← Retour à la liste
+  </a>
+
+  <app-spinner *ngIf="isLoading" label="Chargement..." />
+
+  <div class="detail-layout" *ngIf="!isLoading && entreprise">
+
+    <!-- Colonne principale -->
+    <div class="detail-main">
+
+      <!-- Hero -->
+      <div class="card">
+        <div class="company-hero">
+          <div class="company-hero__avatar">
+            {{ entreprise.nomEntreprise[0].toUpperCase() }}
+          </div>
+          <div class="company-hero__info">
+            <h2 class="company-hero__name">{{ entreprise.nomEntreprise }}</h2>
+            <p class="company-hero__matricule">{{ entreprise.matriculeFiscale }}</p>
+            <app-badge-statut [statut]="entreprise.statutCompte" />
+          </div>
+        </div>
+      </div>
+
+      <!-- Informations entreprise -->
+      <div class="card">
+        <h3 class="card__title">Informations de l'entreprise</h3>
+        <div class="info-grid">
+          <div class="info-item">
+            <span class="info-item__label">Raison sociale</span>
+            <span class="info-item__value">{{ entreprise.nomEntreprise }}</span>
+          </div>
+          <div class="info-item">
+            <span class="info-item__label">Matricule fiscale</span>
+            <span class="info-item__value info-item__value--mono">
+              {{ entreprise.matriculeFiscale }}
+            </span>
+          </div>
+          <div class="info-item">
+            <span class="info-item__label">Secteur d'activité</span>
+            <span class="info-item__value">{{ entreprise.secteurActivite }}</span>
+          </div>
+          <div class="info-item">
+            <span class="info-item__label">Taille</span>
+            <span class="info-item__value">
+              <span class="taille-badge">{{ entreprise.tailleEntreprise }}</span>
+              {{ tailleLabel }}
+            </span>
+          </div>
+          <div class="info-item">
+            <span class="info-item__label">Téléphone</span>
+            <span class="info-item__value">{{ entreprise.telephone }}</span>
+          </div>
+          <div class="info-item" *ngIf="entreprise.siteWeb">
+            <span class="info-item__label">Site web</span>
+            <a class="info-item__link" [href]="entreprise.siteWeb" target="_blank">
+              {{ entreprise.siteWeb }}
+            </a>
+          </div>
+          <div class="info-item">
+            <span class="info-item__label">Adresse</span>
+            <span class="info-item__value">
+              {{ entreprise.adresse }}, {{ entreprise.ville }}, {{ entreprise.pays }}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Propriétaire -->
+      <div class="card">
+        <h3 class="card__title">Propriétaire</h3>
+        <div class="proprietaire">
+          <div class="proprietaire__avatar">
+            {{ entreprise.proprietairePrenom[0] }}{{ entreprise.proprietaireNom[0] }}
+          </div>
+          <div>
+            <p class="proprietaire__name">
+              {{ entreprise.proprietairePrenom }} {{ entreprise.proprietaireNom }}
+            </p>
+            <p class="proprietaire__email">{{ entreprise.proprietaireEmail }}</p>
+            <p class="proprietaire__tel" *ngIf="entreprise.proprietaireTelephone">
+              {{ entreprise.proprietaireTelephone }}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Motif de refus -->
+      <div class="card card--danger" *ngIf="entreprise.motifRefus">
+        <h3 class="card__title card__title--danger">Motif de refus</h3>
+        <p class="motif-text">{{ entreprise.motifRefus }}</p>
+      </div>
+
+    </div>
+
+    <!-- Colonne latérale -->
+    <div class="detail-aside">
+
+      <!-- Chronologie -->
+      <div class="card">
+        <h3 class="card__title">Chronologie</h3>
+        <div class="timeline">
+          <div class="timeline__item">
+            <div class="timeline__dot timeline__dot--created"></div>
+            <div>
+              <p class="timeline__label">Demande soumise</p>
+              <p class="timeline__date">{{ formatDate(entreprise.dateCreation) }}</p>
+            </div>
+          </div>
+          <div class="timeline__item" *ngIf="entreprise.dateValidation">
+            <div class="timeline__dot timeline__dot--validated"></div>
+            <div>
+              <p class="timeline__label">Décision prise</p>
+              <p class="timeline__date">{{ formatDate(entreprise.dateValidation) }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Actions -->
+      <div class="card card--actions">
+        <h3 class="card__title">Actions</h3>
+
+        <ng-container *ngIf="entreprise.statutCompte === 'EN_ATTENTE'">
+          <button class="action-btn action-btn--success" (click)="ouvrirDialogValider()">
+            ✓ Valider le compte
+          </button>
+          <button class="action-btn action-btn--danger" (click)="ouvrirDialogRefuser()">
+            ✕ Refuser la demande
+          </button>
+        </ng-container>
+
+        <button class="action-btn action-btn--ghost-danger" (click)="ouvrirDialogSupprimer()">
+          Supprimer définitivement
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- Modale -->
+<app-confirm-dialog
+  [isOpen]="dialogOpen"
+  [config]="dialogConfig"
+  (confirmed)="onDialogConfirm($event)"
+  (cancelled)="closeDialog()"
+/>

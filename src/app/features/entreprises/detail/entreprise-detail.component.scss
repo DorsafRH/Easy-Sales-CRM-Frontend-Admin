@@ -1,0 +1,281 @@
+.detail-page {
+  max-width: var(--content-max-width);
+
+  &__back {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+    margin-bottom: var(--space-5);
+    text-decoration: none;
+    transition: color var(--transition-fast);
+
+    &:hover {
+      color: var(--color-text-primary);
+      text-decoration: none;
+    }
+  }
+}
+
+// ── Layout deux colonnes ──────────────────────────────────
+
+.detail-layout {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: var(--space-5);
+  align-items: start;
+
+  @media (max-width: 900px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.detail-main,
+.detail-aside {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+// ── Cartes ────────────────────────────────────────────────
+
+.card {
+  background: var(--color-bg-surface);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border);
+  padding: var(--space-5) var(--space-6);
+
+  &--danger {
+    border-color: var(--color-danger);
+    background: var(--color-danger-light);
+  }
+
+  &--actions {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+
+  &__title {
+    font-size: var(--font-size-base);
+    font-weight: 600;
+    color: var(--color-text-primary);
+    margin-bottom: var(--space-4);
+
+    &--danger {
+      color: var(--color-danger-text);
+    }
+  }
+}
+
+// ── Hero ──────────────────────────────────────────────────
+
+.company-hero {
+  display: flex;
+  align-items: center;
+  gap: var(--space-5);
+
+  &__avatar {
+    width: 64px;
+    height: 64px;
+    border-radius: var(--radius-lg);
+    background: var(--color-primary-light);
+    color: var(--color-primary-text);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+
+  &__name {
+    font-size: var(--font-size-xl);
+    font-weight: 700;
+    color: var(--color-text-primary);
+    margin-bottom: var(--space-1);
+  }
+
+  &__matricule {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-tertiary);
+    font-family: monospace;
+    margin-bottom: var(--space-3);
+  }
+}
+
+// ── Grille d'infos ────────────────────────────────────────
+
+.info-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-4);
+
+  @media (max-width: 640px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.info-item {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+
+  &__label {
+    font-size: var(--font-size-xs);
+    font-weight: 600;
+    color: var(--color-text-tertiary);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  &__value {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-primary);
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+
+    &--mono {
+      font-family: monospace;
+    }
+  }
+
+  &__link {
+    font-size: var(--font-size-sm);
+    color: var(--color-primary);
+  }
+}
+
+.taille-badge {
+  font-size: var(--font-size-xs);
+  font-weight: 700;
+  padding: 2px 8px;
+  background: var(--color-bg-hover);
+  color: var(--color-text-secondary);
+  border-radius: var(--radius-full);
+  border: 1px solid var(--color-border);
+}
+
+// ── Propriétaire ──────────────────────────────────────────
+
+.proprietaire {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+
+  &__avatar {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--color-info-light);
+    color: var(--color-info-text);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: var(--font-size-md);
+    flex-shrink: 0;
+    text-transform: uppercase;
+  }
+
+  &__name {
+    font-size: var(--font-size-base);
+    font-weight: 600;
+    color: var(--color-text-primary);
+  }
+
+  &__email,
+  &__tel {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+  }
+}
+
+// ── Motif ─────────────────────────────────────────────────
+
+.motif-text {
+  font-size: var(--font-size-sm);
+  color: var(--color-danger-text);
+  line-height: 1.6;
+}
+
+// ── Timeline ──────────────────────────────────────────────
+
+.timeline {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+
+  &__item {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-3);
+  }
+
+  &__dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    margin-top: 4px;
+
+    &--created   { background: var(--color-primary); }
+    &--validated { background: var(--color-success); }
+  }
+
+  &__label {
+    font-size: var(--font-size-sm);
+    font-weight: 500;
+    color: var(--color-text-primary);
+  }
+
+  &__date {
+    font-size: var(--font-size-xs);
+    color: var(--color-text-secondary);
+  }
+}
+
+// ── Boutons d'action ──────────────────────────────────────
+
+.action-btn {
+  width: 100%;
+  padding: var(--space-3);
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  transition: all var(--transition-fast);
+  cursor: pointer;
+  border: none;
+
+  &:active {
+    transform: scale(0.98);
+  }
+
+  &--success {
+    background: var(--color-success);
+    color: white;
+
+    &:hover { filter: brightness(0.92); }
+  }
+
+  &--danger {
+    background: var(--color-danger);
+    color: white;
+
+    &:hover { background: var(--color-danger-hover); }
+  }
+
+  &--ghost-danger {
+    background: transparent;
+    color: var(--color-danger);
+    border: 1px solid var(--color-danger);
+
+    &:hover { background: var(--color-danger-light); }
+  }
+}

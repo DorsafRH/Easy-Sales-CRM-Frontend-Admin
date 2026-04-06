@@ -1,0 +1,106 @@
+<div class="login">
+
+  <!-- Panneau gauche — formulaire -->
+  <div class="login__form-panel">
+    <div class="login__form-wrapper">
+
+      <div class="login__logo">C</div>
+
+      <h2 class="login__title">Connexion</h2>
+      <p class="login__subtitle">Accès réservé au Super Admin</p>
+
+      <div class="login__alert" *ngIf="errorMessage" role="alert">
+        <svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd"
+            d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1
+               0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
+            clip-rule="evenodd"/>
+        </svg>
+        {{ errorMessage }}
+      </div>
+
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" novalidate>
+
+        <div class="form-field">
+          <label class="form-field__label" for="email">Adresse email</label>
+          <input
+            id="email"
+            type="email"
+            class="form-field__input"
+            [class.form-field__input--error]="isFieldInvalid('email')"
+            formControlName="email"
+            placeholder="admin@crm.com"
+            autocomplete="email"
+          />
+          <span class="form-field__error" *ngIf="isFieldInvalid('email')">
+            {{ getFieldError('email') }}
+          </span>
+        </div>
+
+        <div class="form-field">
+          <div class="form-field__label-row">
+            <label class="form-field__label" for="password">Mot de passe</label>
+            <button
+              type="button"
+              class="form-field__forgot"
+              disabled
+              title="Disponible prochainement"
+            >
+              Mot de passe oublié ?
+            </button>
+          </div>
+          <div class="form-field__password-wrapper">
+            <input
+              id="password"
+              [type]="showPassword ? 'text' : 'password'"
+              class="form-field__input"
+              [class.form-field__input--error]="isFieldInvalid('motDePasse')"
+              formControlName="motDePasse"
+              placeholder="••••••••"
+              autocomplete="current-password"
+            />
+            <button
+              type="button"
+              class="form-field__toggle"
+              (click)="showPassword = !showPassword"
+            >
+              {{ showPassword ? '🙈' : '👁' }}
+            </button>
+          </div>
+          <span class="form-field__error" *ngIf="isFieldInvalid('motDePasse')">
+            {{ getFieldError('motDePasse') }}
+          </span>
+        </div>
+
+        <button type="submit" class="login__submit" [disabled]="isLoading">
+          <span class="login__spinner" *ngIf="isLoading"></span>
+          {{ isLoading ? 'Connexion en cours...' : 'Se connecter' }}
+        </button>
+
+      </form>
+
+    </div>
+  </div>
+
+  <!-- Panneau droit — animation -->
+  <div class="login__visual">
+    <div class="login__visual-content">
+      <div class="login__typewriter">
+        <span class="login__typewriter-text">Bonjour !</span>
+        <span class="login__typewriter-cursor">|</span>
+      </div>
+      <p class="login__visual-sub">Bienvenue sur votre espace d'administration CRM</p>
+      <div class="login__visual-dots">
+        <span class="login__dot"></span>
+        <span class="login__dot"></span>
+        <span class="login__dot"></span>
+      </div>
+    </div>
+    <div class="login__circles">
+      <div class="login__circle login__circle--1"></div>
+      <div class="login__circle login__circle--2"></div>
+      <div class="login__circle login__circle--3"></div>
+    </div>
+  </div>
+
+</div>

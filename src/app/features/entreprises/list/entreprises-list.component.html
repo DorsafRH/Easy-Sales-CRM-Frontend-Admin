@@ -1,0 +1,204 @@
+<div class="list-page">
+
+  <div class="list-page__header">
+    <div class="list-page__header-left">
+      <h2 class="list-page__title">Entreprises</h2>
+      <span class="list-page__count" *ngIf="!isLoading">
+        {{ totalElements }} entreprise{{ totalElements > 1 ? 's' : '' }}
+      </span>
+    </div>
+  </div>
+
+  <div class="list-page__filters">
+    <div class="search">
+      <svg class="search__icon" viewBox="0 0 20 20" fill="currentColor">
+        <path fill-rule="evenodd"
+          d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89
+             3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6
+             6 0 012 8z" clip-rule="evenodd" />
+      </svg>
+      <input
+        type="text"
+        class="search__input"
+        placeholder="Rechercher par nom..."
+        [ngModel]="sharedState.filtres().recherche"
+        (ngModelChange)="sharedState.setFiltreRecherche($event)"
+      />
+    </div>
+
+    <div class="filter-tabs">
+      <button
+        *ngFor="let f of filtreOptions"
+        class="filter-tabs__tab"
+        [class.filter-tabs__tab--active]="sharedState.filtres().statut === f.value"
+        (click)="onFiltreChange(f.value)"
+      >
+        {{ f.label }}
+        <span
+          class="filter-tabs__badge"
+          *ngIf="f.value === 'EN_ATTENTE' && nbEnAttente() > 0"
+        >
+          {{ nbEnAttente() }}
+        </span>
+      </button>
+    </div>
+  </div>
+
+  <app-spinner *ngIf="isLoading" label="Chargement des entreprises..." />
+
+  <div class="table-card" *ngIf="!isLoading">
+
+    <app-empty-state
+      *ngIf="entreprisesFiltered().length === 0"
+      title="Aucune entreprise trouvée"
+      message="Aucune entreprise ne correspond à vos critères."
+      actionLabel="Réinitialiser les filtres"
+      (action)="resetFiltres()"
+    />
+
+    <table class="table" *ngIf="entreprisesFiltered().length > 0">
+      <thead>
+        <tr>
+          <th>Entreprise</th>
+          <th>Secteur</th>
+          <th>Taille</th>
+          <th>Propriétaire</th>
+          <th>Statut</th>
+          <th>Date création</th>
+          <th class="table__th-right">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          *ngFor="let e of entreprisesFiltered()"
+          class="table__row"
+          [class.table__row--en-attente]="e.statutCompte === 'EN_ATTENTE'"
+        >
+          <td>
+            <div class="entreprise-cell">
+              <div class="entreprise-cell__avatar">
+                {{ e.nomEntreprise[0].toUpperCase() }}
+              </div>
+              <div>
+                <div class="entreprise-cell__nom">{{ e.nomEntreprise }}</div>
+                <div class="entreprise-cell__matricule">{{ e.matriculeFiscale }}</div>
+              </div>
+            </div>
+          </td>
+          <td class="table__td-secondary">{{ e.secteurActivite }}</td>
+          <td>
+            <span class="taille-badge">{{ e.tailleEntreprise }}</span>
+          </td>
+          <td class="table__td-secondary">
+            {{ e.proprietairePrenom }} {{ e.proprietaireNom }}
+          </td>
+          <td>
+            <app-badge-statut [statut]="e.statutCompte" />
+          </td>
+          <td class="table__td-secondary table__td-nowrap">
+            {{ formatDate(e.dateCreation) }}
+          </td>
+          <td>
+            <div class="actions">
+              <a
+                class="actions__btn actions__btn--view"
+                [routerLink]="['/admin/entreprises', e.id]"
+                title="Voir le détail"
+              >
+                <svg viewBox="0 0 20 20" fill="currentColor" width="15" height="15">
+                  <path d="M10 12a2 2 0 100-4 2 2 0 000 4z"/>
+                  <path fill-rule="evenodd"
+                    d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943
+                       9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732
+                       14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z"
+                    clip-rule="evenodd"/>
+                </svg>
+              </a>
+
+              <button
+                *ngIf="e.statutCompte === 'EN_ATTENTE'"
+                class="actions__btn actions__btn--success"
+                title="Valider"
+                (click)="ouvrirDialogValider(e)"
+              >
+                <svg viewBox="0 0 20 20" fill="currentColor" width="15" height="15">
+                  <path fill-rule="evenodd"
+                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0
+                       01-1.414 0l-4-4a1 1 0 011.414-1.414L8
+                       12.586l7.293-7.293a1 1 0 011.414 0z"
+                    clip-rule="evenodd"/>
+                </svg>
+              </button>
+
+              <button
+                *ngIf="e.statutCompte === 'EN_ATTENTE'"
+                class="actions__btn actions__btn--danger"
+                title="Refuser"
+                (click)="ouvrirDialogRefuser(e)"
+              >
+                <svg viewBox="0 0 20 20" fill="currentColor" width="15" height="15">
+                  <path fill-rule="evenodd"
+                    d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1
+                       1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0
+                       01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0
+                       01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                    clip-rule="evenodd"/>
+                </svg>
+              </button>
+
+              <button
+                class="actions__btn actions__btn--delete"
+                title="Supprimer"
+                (click)="ouvrirDialogSupprimer(e)"
+              >
+                <svg viewBox="0 0 20 20" fill="currentColor" width="15" height="15">
+                  <path fill-rule="evenodd"
+                    d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2
+                       2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1
+                       1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1
+                       1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"
+                    clip-rule="evenodd"/>
+                </svg>
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="pagination" *ngIf="totalPages > 1">
+      <button
+        class="pagination__btn"
+        [disabled]="currentPage === 0"
+        (click)="goToPage(currentPage - 1)"
+      >
+        Précédent
+      </button>
+      <div class="pagination__numbers">
+        <button
+          *ngFor="let p of pageNumbers()"
+          class="pagination__num"
+          [class.pagination__num--active]="p === currentPage"
+          (click)="goToPage(p)"
+        >
+          {{ p + 1 }}
+        </button>
+      </div>
+      <button
+        class="pagination__btn"
+        [disabled]="currentPage >= totalPages - 1"
+        (click)="goToPage(currentPage + 1)"
+      >
+        Suivant
+      </button>
+    </div>
+
+  </div>
+</div>
+
+<app-confirm-dialog
+  [isOpen]="dialogOpen"
+  [config]="dialogConfig"
+  (confirmed)="onDialogConfirm($event)"
+  (cancelled)="closeDialog()"
+/>

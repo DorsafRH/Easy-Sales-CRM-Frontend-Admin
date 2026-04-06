@@ -1,0 +1,39 @@
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+
+  &__dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: currentColor;
+    opacity: 0.8;
+  }
+
+  &--en-attente {
+    background: var(--color-warning-light);
+    color: var(--color-warning-text);
+  }
+
+  &--active {
+    background: var(--color-success-light);
+    color: var(--color-success-text);
+  }
+
+  &--refuse {
+    background: var(--color-danger-light);
+    color: var(--color-danger-text);
+  }
+
+  &--suspendu {
+    background: var(--color-suspended-light);
+    color: var(--color-suspended-text);
+  }
+}

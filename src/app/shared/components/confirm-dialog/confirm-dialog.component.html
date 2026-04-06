@@ -1,0 +1,52 @@
+<div
+  *ngIf="isOpen"
+  class="dialog-overlay"
+  (click)="onOverlayClick($event)"
+  role="dialog"
+  [attr.aria-label]="config.title"
+>
+  <div class="dialog">
+
+    <!-- En-tête -->
+    <div class="dialog__header">
+      <h3 class="dialog__title">{{ config.title }}</h3>
+      <button class="dialog__close" (click)="cancel()" aria-label="Fermer">✕</button>
+    </div>
+
+    <!-- Corps -->
+    <div class="dialog__body">
+      <p class="dialog__message">{{ config.message }}</p>
+
+      <div class="dialog__field" *ngIf="config.showMotif">
+        <label class="dialog__label">
+          Motif
+          <span class="dialog__required" *ngIf="config.motifRequired"> *</span>
+        </label>
+        <textarea
+          class="dialog__textarea"
+          [(ngModel)]="motif"
+          placeholder="Saisissez le motif..."
+          rows="3"
+        ></textarea>
+        <span class="dialog__error" *ngIf="motifError">
+          Le motif est obligatoire.
+        </span>
+      </div>
+    </div>
+
+    <!-- Pied -->
+    <div class="dialog__footer">
+      <button class="btn btn--secondary" (click)="cancel()">Annuler</button>
+      <button
+        class="btn"
+        [class.btn--danger]="config.confirmVariant === 'danger'"
+        [class.btn--success]="config.confirmVariant === 'success'"
+        [class.btn--primary]="config.confirmVariant === 'primary'"
+        (click)="confirm()"
+      >
+        {{ config.confirmLabel }}
+      </button>
+    </div>
+
+  </div>
+</div>
