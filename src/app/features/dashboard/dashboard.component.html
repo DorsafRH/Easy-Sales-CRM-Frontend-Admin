@@ -1,0 +1,76 @@
+<div class="dashboard">
+
+  <div class="dashboard__header">
+    <h2 class="dashboard__title">Tableau de bord</h2>
+    <p class="dashboard__subtitle">Vue d'ensemble des comptes entreprises</p>
+  </div>
+
+  <app-spinner *ngIf="isLoading()" label="Chargement..." />
+
+  <div class="dashboard__grid" *ngIf="!isLoading() && stats()">
+    <div
+      *ngFor="let carte of cartes"
+      class="stat-card stat-card--{{ carte.couleur }}"
+      [class.stat-card--clickable]="carte.filtre !== null"
+      (click)="naviguerVersListe(carte.filtre)"
+      [attr.role]="carte.filtre ? 'button' : null"
+      [attr.tabindex]="carte.filtre ? '0' : null"
+    >
+      <div class="stat-card__icon">
+        <!-- Total -->
+        <svg *ngIf="carte.icon === 'total'" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/>
+          <polyline points="9 22 9 12 15 12 15 22"/>
+        </svg>
+        <!-- En attente -->
+        <svg *ngIf="carte.icon === 'attente'" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"/>
+          <polyline points="12 6 12 12 16 14"/>
+        </svg>
+        <!-- Active -->
+        <svg *ngIf="carte.icon === 'active'" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="20 6 9 17 4 12"/>
+        </svg>
+        <!-- Refusée -->
+        <svg *ngIf="carte.icon === 'refuse'" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"/>
+          <line x1="15" y1="9" x2="9" y2="15"/>
+          <line x1="9" y1="9" x2="15" y2="15"/>
+        </svg>
+        <!-- Suspendue -->
+        <svg *ngIf="carte.icon === 'suspendu'" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"/>
+          <line x1="12" y1="8" x2="12" y2="12"/>
+          <line x1="12" y1="16" x2="12.01" y2="16"/>
+        </svg>
+      </div>
+
+      <div class="stat-card__content">
+        <span class="stat-card__value">{{ getValeur(carte.key) }}</span>
+        <span class="stat-card__label">{{ carte.label }}</span>
+      </div>
+
+      <div class="stat-card__arrow" *ngIf="carte.filtre">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+          stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+          width="16" height="16">
+          <polyline points="9 18 15 12 9 6"/>
+        </svg>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Raccourci vers la liste -->
+  <div class="dashboard__footer" *ngIf="!isLoading() && stats()">
+    <button class="dashboard__link" (click)="naviguerVersListe(null)">
+      Voir toutes les entreprises →
+    </button>
+  </div>
+
+</div>

@@ -1,0 +1,140 @@
+.dashboard {
+  max-width: var(--content-max-width);
+
+  &__header {
+    margin-bottom: var(--space-6);
+  }
+
+  &__title {
+    font-size: var(--font-size-xl);
+    font-weight: 700;
+    color: var(--color-text-primary);
+    margin-bottom: var(--space-1);
+  }
+
+  &__subtitle {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+  }
+
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: var(--space-4);
+    margin-bottom: var(--space-6);
+  }
+
+  &__footer {
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  &__link {
+    font-size: var(--font-size-sm);
+    color: var(--color-primary);
+    font-weight: 500;
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: color var(--transition-fast);
+
+    &:hover {
+      color: var(--color-primary-hover);
+    }
+  }
+}
+
+// ── Cartes statistiques ───────────────────────────────────
+
+.stat-card {
+  background: var(--color-bg-surface);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border);
+  padding: var(--space-5);
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  transition: all var(--transition-fast);
+  position: relative;
+
+  &--clickable {
+    cursor: pointer;
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+      border-color: var(--color-border-strong);
+    }
+
+    &:active {
+      transform: translateY(0);
+    }
+  }
+
+  &__icon {
+    width: 48px;
+    height: 48px;
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+
+    svg {
+      width: 22px;
+      height: 22px;
+    }
+  }
+
+  &__content {
+    flex: 1;
+    min-width: 0;
+  }
+
+  &__value {
+    display: block;
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--color-text-primary);
+    line-height: 1.2;
+  }
+
+  &__label {
+    display: block;
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+    margin-top: var(--space-1);
+  }
+
+  &__arrow {
+    color: var(--color-text-tertiary);
+    flex-shrink: 0;
+  }
+
+  // ── Variantes couleur ─────────────────────────────────
+
+  &--primary &__icon {
+    background: var(--color-primary-light);
+    color: var(--color-primary);
+  }
+
+  &--warning &__icon {
+    background: var(--color-warning-light);
+    color: var(--color-warning);
+  }
+
+  &--success &__icon {
+    background: var(--color-success-light);
+    color: var(--color-success);
+  }
+
+  &--danger &__icon {
+    background: var(--color-danger-light);
+    color: var(--color-danger);
+  }
+
+  &--suspended &__icon {
+    background: var(--color-suspended-light);
+    color: var(--color-suspended);
+  }
+}
