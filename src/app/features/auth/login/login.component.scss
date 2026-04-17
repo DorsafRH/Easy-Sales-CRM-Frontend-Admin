@@ -225,29 +225,12 @@
 .form-field {
   margin-bottom: var(--space-5);
 
-  &__label-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: var(--space-2);
-  }
-
   &__label {
     display: block;
     font-size: var(--font-size-sm);
     font-weight: 600;
     color: var(--color-text-primary);
     margin-bottom: var(--space-2);
-  }
-
-  &__forgot {
-    font-size: var(--font-size-xs);
-    color: var(--color-text-tertiary);
-    cursor: not-allowed;
-    background: none;
-    border: none;
-    padding: 0;
-    opacity: 0.6;
   }
 
   &__input {
@@ -292,11 +275,27 @@
     right: var(--space-3);
     top: 50%;
     transform: translateY(-50%);
-    font-size: 16px;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     background: none;
     border: none;
+    border-radius: var(--radius-sm);
+    color: var(--color-text-tertiary);
     cursor: pointer;
-    padding: var(--space-1);
+    transition: all var(--transition-fast);
+
+    &:hover {
+      color: var(--color-text-primary);
+      background: var(--color-bg-hover);
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--color-primary);
+      outline-offset: 2px;
+    }
   }
 
   &__error {
