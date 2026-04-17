@@ -14,7 +14,7 @@
     align-items: center;
     gap: var(--space-3);
     padding: var(--space-5);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    border-bottom: 1px solid var(--color-border-white-subtle);
     min-height: var(--header-height);
   }
 
@@ -28,7 +28,7 @@
     justify-content: center;
     font-weight: 700;
     font-size: 18px;
-    color: white;
+    color: var(--color-text-inverse);
     flex-shrink: 0;
   }
 
@@ -36,14 +36,14 @@
     display: block;
     font-size: var(--font-size-md);
     font-weight: 600;
-    color: white;
+    color: var(--color-text-inverse);
     line-height: 1.2;
   }
 
   &__logo-role {
     display: block;
     font-size: var(--font-size-xs);
-    color: rgba(255, 255, 255, 0.45);
+    color: var(--color-text-white-medium);
     letter-spacing: 0.03em;
   }
 
@@ -59,7 +59,7 @@
     font-weight: 600;
     letter-spacing: 0.08em;
     text-transform: uppercase;
-    color: rgba(255, 255, 255, 0.35);
+    color: var(--color-text-white-soft);
     padding: 0 var(--space-3);
     margin-bottom: var(--space-2);
   }
@@ -70,7 +70,7 @@
     gap: var(--space-3);
     padding: var(--space-3);
     border-radius: var(--radius-md);
-    color: rgba(255, 255, 255, 0.65);
+    color: var(--color-text-white-strong);
     font-size: var(--font-size-sm);
     font-weight: 500;
     transition: all var(--transition-fast);
@@ -79,13 +79,13 @@
 
     &:hover {
       background: var(--color-bg-sidebar-hover);
-      color: white;
+      color: var(--color-text-inverse);
       text-decoration: none;
     }
 
     &--active {
       background: var(--color-primary) !important;
-      color: white !important;
+      color: var(--color-text-inverse) !important;
     }
   }
 
@@ -101,7 +101,7 @@
 
   &__badge {
     background: var(--color-warning);
-    color: white;
+    color: var(--color-text-inverse);
     font-size: 10px;
     font-weight: 700;
     padding: 2px 7px;
@@ -115,7 +115,7 @@
     align-items: center;
     gap: var(--space-3);
     padding: var(--space-4);
-    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    border-top: 1px solid var(--color-border-white-subtle);
   }
 
   &__user {
@@ -131,7 +131,7 @@
     height: 34px;
     border-radius: 50%;
     background: var(--color-primary);
-    color: white;
+    color: var(--color-text-inverse);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -144,7 +144,7 @@
     display: block;
     font-size: var(--font-size-sm);
     font-weight: 500;
-    color: white;
+    color: var(--color-text-inverse);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -153,19 +153,19 @@
   &__user-role {
     display: block;
     font-size: var(--font-size-xs);
-    color: rgba(255, 255, 255, 0.4);
+    color: var(--color-text-white-faint);
   }
 
   &__logout {
-    color: rgba(255, 255, 255, 0.45);
+    color: var(--color-text-white-medium);
     padding: var(--space-2);
     border-radius: var(--radius-md);
     transition: all var(--transition-fast);
     flex-shrink: 0;
 
     &:hover {
-      background: rgba(255, 255, 255, 0.1);
-      color: white;
+      background: var(--color-border-white-subtle);
+      color: var(--color-text-inverse);
     }
   }
 }
