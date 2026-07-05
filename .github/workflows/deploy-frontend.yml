@@ -1,0 +1,60 @@
+# ============================================================
+#  CI front admin Angular -> image nginx -> ACR
+#  Déclenché à chaque "git push" sur develop (+ bouton manuel).
+#
+#  ⚠️ Static Web App impossible (policy de régions de l'abonnement étudiant)
+#     -> le front est servi par nginx dans une Container App (comme le backend).
+#
+#  ⚠️ Déploiement (CD) MANUEL (tenant ESPRIT bloque l'identité Azure) :
+#       az containerapp update --name easysales-admin-web \
+#         --resource-group easysales-rg \
+#         --image easysalesacrm.azurecr.io/easysales-admin-web:latest
+#
+#  Secrets GitHub requis (repo front) :
+#    ACR_USERNAME / ACR_PASSWORD  (mêmes valeurs que le repo backend)
+# ============================================================
+
+name: CI frontend admin -> ACR
+
+on:
+  push:
+    branches: [ develop ]
+  workflow_dispatch:
+
+env:
+  ACR_LOGIN_SERVER: easysalesacrm.azurecr.io
+  IMAGE_NAME: easysales-admin-web
+
+jobs:
+  build-push:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Installer les dépendances
+        run: npm ci
+
+      # Build de PRODUCTION : fileReplacements remplace environment.ts par
+      # environment.prod.ts -> l'app pointe sur l'URL Azure du backend.
+      - name: Build Angular (production)
+        run: npm run build -- --configuration production
+
+      - name: Connexion à l'ACR
+        run: echo "${{ secrets.ACR_PASSWORD }}" | docker login ${{ env.ACR_LOGIN_SERVER }} -u "${{ secrets.ACR_USERNAME }}" --password-stdin
+
+      # L'image nginx copie dist/frontend-admin-web/browser (déjà buildé ci-dessus)
+      - name: Build de l'image Docker (nginx)
+        run: |
+          IMAGE="${{ env.ACR_LOGIN_SERVER }}/${{ env.IMAGE_NAME }}"
+          docker build -t "$IMAGE:${{ github.sha }}" -t "$IMAGE:latest" .
+
+      - name: Push de l'image vers l'ACR
+        run: |
+          IMAGE="${{ env.ACR_LOGIN_SERVER }}/${{ env.IMAGE_NAME }}"
+          docker push "$IMAGE:${{ github.sha }}"
+          docker push "$IMAGE:latest"

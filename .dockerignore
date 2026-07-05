@@ -1,0 +1,8 @@
+# Seuls nginx.conf et dist/ sont nécessaires à l'image
+node_modules
+.git
+.github
+.angular
+src
+public
+*.md
